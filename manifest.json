@@ -1,0 +1,7 @@
+{
+    "name": "Streamer Mode Hide Guilds",
+    "author": "Aria",
+    "description": "Hides servers if streamer mode is enabled",
+    "license": "MIT",
+    "version": "1.0.0"
+}
