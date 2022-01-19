@@ -1,8 +1,6 @@
 const { React } = require("powercord/webpack");
 const { SwitchItem } = require("powercord/components/settings");
 
-// module.exports = ({ get, set }) => {};
-
 module.exports = class FUCKMAN extends React.Component {
     render() {
         const { get, set } = this.props;
@@ -13,7 +11,7 @@ module.exports = class FUCKMAN extends React.Component {
                     set("enabled", !get("enabled", true));
                     this.forceUpdate();
                 }}
-                note="Hides the servers when you enabled streamer mode"
+                note="Hides the servers when you enable streamer mode"
             >
                 Hide Servers
             </SwitchItem>

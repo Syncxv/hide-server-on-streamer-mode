@@ -15,21 +15,17 @@ const SiwtchItem = require("./components/SettingsSwitchItem");
 class IdkMan extends Plugin {
     constructor(props) {
         super(props);
-        this.toastName = "streamer-hide-notif";
     }
 
     startPlugin() {
-        console.log(this);
         FluxDispatcher.subscribe(constants.ActionTypes.STREAMER_MODE_UPDATE, this.handleStreamModeUpdate.bind(this));
         this.patchSwitchItem();
     }
 
     async patchSwitchItem() {
         const UserSettingsModalStreamerMode = getModuleByDisplayName("FluxContainer(UserSettingsModalStreamerMode)", false);
-        inject("STREAMER_FLUXCONTAINER", UserSettingsModalStreamerMode.prototype, "render", (args, res) => {
-            this.log("WOAH", res);
-            inject("ATUAL_STREAMER_TYPE", res.type.prototype, "render", (args, res) => {
-                console.log("IN SIDE RES.TYPE.PROTOTPYE", args, res);
+        inject("STREAMER_FLUXCONTAINER", UserSettingsModalStreamerMode.prototype, "render", (_, res) => {
+            inject("ATUAL_STREAMER_TYPE", res.type.prototype, "render", (_, res) => {
                 res.props.children.push(React.createElement(SiwtchItem, { get: this.settings.get, set: this.settings.set }));
                 return res;
             });
@@ -42,7 +38,7 @@ class IdkMan extends Plugin {
         const serversElemm = document.querySelector(`[aria-label="${Messages.SERVERS}"]`);
         if (e.value) {
             if (!serversElemm) {
-                return powercord.api.notices.sendToast(this.toastName, {
+                return powercord.api.notices.sendToast("streamer-hide-notif", {
                     type: "failed",
                     header: "Streamer Mode Hide Servers",
                     content: "CANT FIND THE SERVER ELEM :(",
@@ -51,7 +47,7 @@ class IdkMan extends Plugin {
                             text: "Dismiss",
                             color: "green",
                             look: "outlined",
-                            onClick: () => powercord.api.notices.closeToast(this.toastName),
+                            onClick: () => powercord.api.notices.closeToast("streamer-hide-notif"),
                         },
                     ],
                     timeout: 1e4,
@@ -61,9 +57,6 @@ class IdkMan extends Plugin {
         } else {
             serversElemm.style.display = "block";
         }
-    }
-    log(hehe, res) {
-        console.log(`%c[Streamer-${hehe}]`, "color: #eb4d4b", res);
     }
     pluginWillUnload() {
         uninject("STREAMER_FLUXCONTAINER");
